@@ -34,10 +34,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "rtabmap/core/StereoCameraModel.h"
 #include "rtabmap/gui/CloudViewerInteractorStyle.h"
 
-#if VTK_MAJOR_VERSION > 8
-#ifndef slots
-#define slots Q_SLOTS
-#endif
 #include <QVTKOpenGLNativeWidget.h>
 using PCLQVTKWidget = QVTKOpenGLNativeWidget;
 #else
