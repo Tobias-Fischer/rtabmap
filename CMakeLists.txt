@@ -79,14 +79,6 @@ IF(MINGW)
     SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--enable-auto-import")
 ENDIF(MINGW)
 
-# GCC 4 required
-IF(UNIX OR MINGW)
-    EXEC_PROGRAM( gcc ARGS "-dumpversion" OUTPUT_VARIABLE GCC_VERSION )
-    IF(GCC_VERSION VERSION_LESS "4.0.0")
-        MESSAGE(FATAL_ERROR "GCC ${GCC_VERSION} found, but version 4.x.x minimum is required")
-    ENDIF(GCC_VERSION VERSION_LESS "4.0.0")
-ENDIF(UNIX OR MINGW)
-
 #The CDT Error Parser cannot handle error messages that span 
 #more than one line, which is the default gcc behavior. 
 #In order to force gcc to generate single line error messages with no line wrapping
@@ -162,14 +154,14 @@ OPTION(BUILD_TOOLS "Build tools" ON)
 OPTION(BUILD_EXAMPLES "Build examples" ON)
 
 ####### DEPENDENCIES #######
-IF(MOBILE_BUILD)
+IF(FALSE)
 option(WITH_QT            "Include Qt support"                   OFF)
 ELSE()
 option(WITH_QT            "Include Qt support"                   ON)
 ENDIF()
 option(WITH_ORB_OCTREE    "Include ORB Octree feature support"   ON)
 option(WITH_TORCH         "Include Torch support (SuperPoint)"   OFF)
-option(WITH_PYTHON        "Include Python3 support (PyMatcher, PyDetector)"  OFF)
+option(WITH_PYTHON        "Include Python3 support (PyMatcher, PyDetector)"  ON)
 option(WITH_PYTHON_THREADING  "Use more than one Python interpreter."  OFF)
 option(WITH_PDAL          "Include PDAL support"                 ON)
 option(WITH_FREENECT      "Include Freenect support"             ON)
@@ -348,6 +340,8 @@ IF(WITH_QT)
         ENDIF()
         ADD_DEFINITIONS(-DQT_NO_KEYWORDS) # To avoid conflicts with boost signals/foreach and Qt macros
     ENDIF(QT4_FOUND OR Qt5_FOUND)
+ELSE()
+    add_compile_definitions(DISABLE_VTK)
 ENDIF(WITH_QT)
 
 IF(NOT VTK_FOUND)
